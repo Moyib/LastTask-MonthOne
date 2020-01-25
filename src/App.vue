@@ -7,9 +7,9 @@
         <header>
           <h1 class="title quiztitle">How much of a patriot are you?</h1>
           <div class="progressContainer">
-            <progress class="progress" :value="(questionIndex/quizData.questions.length)*100" max="100">
+            <div class="progress" :value="(questionIndex/quizData.questions.length)*100" max="100">
             {{ (questionIndex/quizData.questions.length)*100 }}%
-            </progress>
+            </div>
             <p>
               {{ (questionIndex/quizData.questions.length)*100 }}% complete
             </p>
