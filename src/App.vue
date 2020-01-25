@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <transition :duration="{ enter: 300, leave: 300 }" enter-active-class="animated zoomIn" leave-active-class="animated zoomOut" mode="out-in">
+    <transition
+        :duration="{ enter: 300, leave: 300 }"
+        enter-active-class="animated zoomIn"
+        leave-active-class="animated zoomOut" mode="out-in"
+    >
 
       <!-- The questions -->
       <div class="quizQuestions" v-if="questionIndex < quizData.questions.length">
@@ -8,7 +12,7 @@
           <h1 class="title quiztitle">How much of a patriot are you?</h1>
           <div class="progressContainer">
             <div class="progress" :value="(questionIndex / quizData.questions.length) * 100" max="100">
-            {{ (questionIndex / quizData.questions.length)*100 }}%
+            {{ (questionIndex / quizData.questions.length) * 100 }}%
             </div>
             <p>
               {{ (questionIndex / quizData.questions.length) * 100 }}% complete
@@ -28,20 +32,20 @@
               :class="{'is-selected' : userResponses[questionIndex] == index}"
               :key="index"
           >
-            {{ index | respIndex }}. {{ response.text }}
+            {{ response.option }}. {{ response.text }}
           </div>
         </div>
 
         <footer class="quizFooter">
           <nav class="pagination" role="navigation">
-            <a class="button" @click="prev();" :disabled="questionIndex < 1">Go back</a>
+            <a class="button" @click="prev" :disabled="questionIndex < 1">Go back</a>
 
             <a class="button"
-               :class="(userResponses[questionIndex]==null)?'':'is-active'"
-               @click="next()"
-               :disabled="questionIndex>=quizData.questions.length"
+               :class="(userResponses[questionIndex] == null) ? '' : 'is-active'"
+               @click="next"
+               :disabled="questionIndex >= quizData.questions.length"
             >
-              {{ (userResponses[questionIndex]==null)?'Skip':'Next' }}
+              {{ (userResponses[questionIndex]==null) ? 'Skip' : 'Next' }}
             </a>
           </nav>
         </footer>
@@ -53,15 +57,13 @@
         <p class="scorecard">
           Total score is: {{ score() }} / {{ quizData.questions.length }}
         </p>
-        <a class="button" @click="restart()">Take quiz again <i class="fa fa-refresh"></i></a>
+        <a class="button" @click="restart">Take quiz again <i class="fa fa-refresh"></i></a>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
-let i = 0;
 
 export default {
   name: 'app',
@@ -73,50 +75,50 @@ export default {
           {
             text: "Where is the capital of Nigeria?",
             responses: [
-              { text: "Lagos" },
-              { text: "Kaduna" },
-              { text: "Abuja", correct: true },
-              { text: "Plateau" }
+              { option: 'a', text: "Lagos" },
+              { option: 'b', text: "Kaduna" },
+              { option: 'c', text: "Abuja", correct: true },
+              { option: 'd', text: "Plateau" }
             ]
           },
 
           {
             text: "What state was the first official capital of Nigeria?",
             responses: [
-              { text: "Taraba" },
-              { text: "Ondo" },
-              { text: "Abuja" },
-              { text: "Lagos", correct: true }
+              { option: 'a', text: "Taraba" },
+              { option: 'b', text: "Ondo" },
+              { option: 'c', text: "Abuja" },
+              { option: 'd', text: "Lagos", correct: true }
             ]
           },
 
           {
             text: "What name was Calabar originally called?",
             responses: [
-              { text: "Akwaa Akpa", correct: true },
-              { text: "Old Calabar" },
-              { text: "Enwang" },
-              { text: "Eniong" }
+              { option: 'a', text: "Akwaa Akpa", correct: true },
+              { option: 'b', text: "Old Calabar" },
+              { option: 'c', text: "Enwang" },
+              { option: 'd', text: "Eniong" }
             ]
           },
 
           {
             text: "Approximately how many ethnic groups do we have in Nigeria?",
             responses: [
-              { text: "About 500", correct: true },
-              { text: "About 600" },
-              { text: "About 700" },
-              { text: "About 800" }
+              { option: 'a', text: "About 500", correct: true },
+              { option: 'b', text: "About 600" },
+              { option: 'c', text: "About 700" },
+              { option: 'd', text: "About 800" }
             ]
           },
 
           {
             text: "When was the first building in Nigeria built?",
             responses: [
-              { text: "1843" },
-              { text: "1844" },
-              { text: "1845", correct: true },
-              { text: "1846" }
+              { option: 'a', text: "1843" },
+              { option: 'b', text: "1844" },
+              { option: 'c', text: "1845", correct: true },
+              { option: 'd', text: "1846" }
             ]
           }
         ]
@@ -127,19 +129,13 @@ export default {
     }
   },
 
-  filters: {
-    respIndex() {
-      return String.fromCharCode(97 + i);
-    }
-  },
-
   methods: {
     restart() {
       this.questionIndex = 0;
       this.userResponses = [];
     },
     selectOption: function(index) {
-      Vue.set(this.userResponses, this.questionIndex, index);
+      this.$set(this.userResponses, this.questionIndex, index);
     },
     next() {
       if (this.questionIndex < this.quizData.questions.length)
