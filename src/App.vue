@@ -22,7 +22,7 @@
 
         <div class="optionContent">
           <div class="option" v-for="(response, index) in quizData.questions[questionIndex].responses" @click="selectOption(index)" :class="{'is-selected' : userResponses[questionIndex] == index}" :key="index">
-            {{ index | respIndex }}. {{ response.text }}
+            {{ responses.option }}. {{ response.text }}
           </div>
         </div>
 
@@ -56,7 +56,7 @@ const quizData = {
    {
       text: "Where is the capital of Nigeria?",
       responses: [
-        { text: "Lagos" },
+        { option: "a", text: "Lagos" },
         { text: "Kaduna" },
         { text: "Abuja", correct: true },
         { text: "Plateau" }
