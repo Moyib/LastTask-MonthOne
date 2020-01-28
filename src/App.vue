@@ -1,11 +1,12 @@
 <template>
-<div class="main-body">
+
+  <div class="main-body">
     <div id="app" class="quiz-body">
       <div class="intro">
         <h2>How much of a patriot are you?</h2>
         <a role="button" class="takeQuiz" @click="showQuiz = true">Take Quiz</a>
-      </div>
-      <questions class="questions" v-if="showQuiz"></questions>
+        <questions v-if="showQuiz" class="questions"></questions>
+
         <!-- Quiz Results -->
         <div class="quizEnd" v-if="questionIndex >= quizData.questions.length" :key="questionIndex">
 
@@ -13,14 +14,16 @@
             Total score is: {{ score() }} / {{ quizData.questions.length }}
           </p>
           <a class="button" @click="restart">Take quiz again <i class="fa fa-refresh"></i></a>
-        </div> <!-- End of quiz results -->
-      
+        </div>
+        
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import questions from './components/questions.vue';
+
 export default {
   name: 'app',
   components: {
@@ -94,6 +97,17 @@ export default {
     restart() {
       this.questionIndex = 0;
       this.userResponses = [];
+    },
+    selectOption: function(index) {
+      this.$set(this.userResponses, this.questionIndex, index);
+    },
+    next() {
+      if (this.questionIndex < this.quizData.questions.length)
+      this.questionIndex++;
+    },
+    prev() {
+      if (this.quizData.questions.length > 0)
+      this.questionIndex--;
     },
     score() {
       let score = 0;
