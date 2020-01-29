@@ -11,7 +11,11 @@
             
           <header>
             <div class="progressContainer">
-              <div class="progress" :style="{width: (questionIndex / quizData.questions.length) * 100 + '%'}" :value="(questionIndex / quizData.questions.length) * 100" max="100">
+              <div class="progress"
+                   :style="{width: (questionIndex / quizData.questions.length) * 100 + '%'}"
+                   :value="(questionIndex / quizData.questions.length) * 100"
+                   max="100"
+              >
               {{ (questionIndex / quizData.questions.length) * 100 }}%
               </div>
               <p>
@@ -50,7 +54,15 @@
             </nav>
           </footer>
         </div> <!-- End of the question content -->
-        
+
+        <!-- Quiz Results -->
+        <div class="quizEnd" v-if="quizEnd" :key="questionIndex">
+
+          <p class="scorecard">
+            Total score is: {{ score() }} / {{ quizData.questions.length }}
+          </p>
+          <a class="button" @click="restart">Take quiz again <i class="fa fa-refresh"></i></a>
+        </div>
       </div>
     </div>
  </transition>
@@ -122,6 +134,10 @@ export default {
   },
 
   methods: {
+    restart() {
+      this.questionIndex = 0;
+      this.userResponses = [];
+    },
     selectOption: function(index) {
       this.$set(this.userResponses, this.questionIndex, index);
     },
@@ -132,13 +148,31 @@ export default {
     prev() {
       if (this.quizData.questions.length > 0)
       this.questionIndex--;
+    },
+    score() {
+      let score = 0;
+      for (let i = 0; i < this.userResponses.length; i++) {
+        if (typeof this.quizData.questions[i].responses[this.userResponses[i]] !== "undefined" &&
+            this.quizData.questions[i].responses[this.userResponses[i]].correct) {
+          score += 1;
+        }
+      }
+      return score;
+    }
+  },
+
+  computed: {
+    quizEnd() {
+      if (this.questionIndex >= this.quizData.questions.length) {
+        return true
+      }
+      return false
     }
   }
 } 
 </script>
 
 <style scoped>
-
 
 .questionBackground {
     display: flex;
