@@ -4,13 +4,13 @@
     enter-active-class="animated zoomIn"
     leave-active-class="animated zoomOut" mode="out-in"> 
    
-    <div class="questionBackground">
-      <div class="questionContainer">
+    <div class="question-background">
+      <div class="question-container">
 
-          <div class="quizQuestions" v-if="questionIndex < quizData.questions.length">
+          <div class="quiz-questions" v-if="questionIndex < quizData.questions.length">
             
           <header>
-            <div class="progressContainer">
+            <div class="progress-container">
               <div class="progress"
                    :style="{width: (questionIndex / quizData.questions.length) * 100 + '%'}"
                    :value="(questionIndex / quizData.questions.length) * 100"
@@ -24,11 +24,11 @@
             </div>
           </header>
 
-          <h2 class="questionTitle">
+          <h2 class="question-title">
             {{ quizData.questions[questionIndex].text }}
           </h2>
 
-          <div class="optionContent">
+          <div class="option-content">
             <div
                 class="option"
                 v-for="(response, index) in quizData.questions[questionIndex].responses"
@@ -40,7 +40,7 @@
             </div>
           </div>
 
-          <footer class="quizFooter">
+          <footer class="quiz-footer">
             <nav class="footer-buttons" role="navigation">
               <a class="button" @click="prev" :disabled="questionIndex < 1">Go back</a>
 
@@ -56,7 +56,7 @@
         </div> <!-- End of the question content -->
 
         <!-- Quiz Results -->
-        <div class="quizEnd" v-if="quizEnd" :key="questionIndex">
+        <div class="quiz-end" v-if="quizEnd" :key="questionIndex">
 
           <p class="scorecard">
             Total score is: {{ score() }} / {{ quizData.questions.length }}
@@ -163,10 +163,7 @@ export default {
 
   computed: {
     quizEnd() {
-      if (this.questionIndex >= this.quizData.questions.length) {
-        return true
-      }
-      return false
+      return this.questionIndex >= this.quizData.questions.length
     }
   }
 } 
@@ -174,7 +171,7 @@ export default {
 
 <style scoped>
 
-.questionBackground {
+.question-background {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -184,11 +181,11 @@ export default {
 transition-duration: 0.1s;
 }
 
-.progressContainer {
+.progress-container {
   transition: width 500ms;
 }
 
-.progressContainer .progress {
+.progress-container .progress {
   border-bottom: 1px solid #C2CECE;
   padding-bottom: 5px;
   background-color: green;
@@ -217,7 +214,7 @@ transition-duration: 0.1s;
   border-color: lightblue;
 }
 
-.quizFooter {
+.quiz-footer {
   margin-top: 30px;
 }
 
