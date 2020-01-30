@@ -57,11 +57,11 @@
 
         <!-- Quiz Results -->
         <div class="quiz-end" v-if="quizEnd" :key="questionIndex">
-
+        
           <p class="scorecard">
             Total score is: {{ score() }} / {{ quizData.questions.length }}
           </p>
-          <a class="button" @click="restart">Take quiz again <i class="fa fa-refresh"></i></a>
+          <a class="final-button" @click="restart">Take quiz again &nbsp;&nbsp;<font-awesome-icon icon="redo" /></a>
         </div>
       </div>
     </div>
@@ -168,7 +168,6 @@ export default {
   }
 } 
 </script>
-
 <style scoped>
 
 .question-background {
@@ -223,18 +222,21 @@ transition-duration: 0.1s;
   justify-content: space-between;
 }
 
-.footer-buttons .button {
+.footer-buttons .button, .final-button {
   padding: .5rem;
   border: 1px solid gainsboro;
   border-radius: .5rem;
   cursor: pointer;
   transition: 0.3s;
 }
-.footer-buttons .button:hover {
+.footer-buttons .button:hover, .final-button:hover {
   background-color: lavender;
 }
-.footer-buttons .button:active {
+.footer-buttons .button:active, .final-button:active {
   transform: scaleX(0.8);
+}
+.scorecard {
+  margin-bottom: 30px;
 }
 
 </style>>
