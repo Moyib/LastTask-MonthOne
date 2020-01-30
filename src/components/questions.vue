@@ -4,14 +4,18 @@
     enter-active-class="animated zoomIn"
     leave-active-class="animated zoomOut" mode="out-in"> 
    
-    <div class="questionBackground">
-      <div class="questionContainer">
+    <div class="question-background">
+      <div class="question-container">
 
-          <div class="quizQuestions" v-if="questionIndex < quizData.questions.length">
+          <div class="quiz-questions" v-if="questionIndex < quizData.questions.length">
             
           <header>
-            <div class="progressContainer">
-              <div class="progress" :style="{width: (questionIndex / quizData.questions.length) * 100 + '%'}" :value="(questionIndex / quizData.questions.length) * 100" max="100">
+            <div class="progress-container">
+              <div class="progress"
+                   :style="{width: (questionIndex / quizData.questions.length) * 100 + '%'}"
+                   :value="(questionIndex / quizData.questions.length) * 100"
+                   max="100"
+              >
               {{ (questionIndex / quizData.questions.length) * 100 }}%
               </div>
               <p>
@@ -20,11 +24,11 @@
             </div>
           </header>
 
-          <h2 class="questionTitle">
+          <h2 class="question-title">
             {{ quizData.questions[questionIndex].text }}
           </h2>
 
-          <div class="optionContent">
+          <div class="option-content">
             <div
                 class="option"
                 v-for="(response, index) in quizData.questions[questionIndex].responses"
@@ -36,7 +40,7 @@
             </div>
           </div>
 
-          <footer class="quizFooter">
+          <footer class="quiz-footer">
             <nav class="footer-buttons" role="navigation">
               <a class="button" @click="prev" :disabled="questionIndex < 1">Go back</a>
 
@@ -50,7 +54,15 @@
             </nav>
           </footer>
         </div> <!-- End of the question content -->
-        
+
+        <!-- Quiz Results -->
+        <div class="quiz-end" v-if="quizEnd" :key="questionIndex">
+
+          <p class="scorecard">
+            Total score is: {{ score() }} / {{ quizData.questions.length }}
+          </p>
+          <a class="button" @click="restart">Take quiz again <i class="fa fa-refresh"></i></a>
+        </div>
       </div>
     </div>
  </transition>
@@ -122,6 +134,10 @@ export default {
   },
 
   methods: {
+    restart() {
+      this.questionIndex = 0;
+      this.userResponses = [];
+    },
     selectOption: function(index) {
       this.$set(this.userResponses, this.questionIndex, index);
     },
@@ -132,6 +148,22 @@ export default {
     prev() {
       if (this.quizData.questions.length > 0)
       this.questionIndex--;
+    },
+    score() {
+      let score = 0;
+      for (let i = 0; i < this.userResponses.length; i++) {
+        if (typeof this.quizData.questions[i].responses[this.userResponses[i]] !== "undefined" &&
+            this.quizData.questions[i].responses[this.userResponses[i]].correct) {
+          score += 1;
+        }
+      }
+      return score;
+    }
+  },
+
+  computed: {
+    quizEnd() {
+      return this.questionIndex >= this.quizData.questions.length
     }
   }
 } 
@@ -139,8 +171,7 @@ export default {
 
 <style scoped>
 
-
-.questionBackground {
+.question-background {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,11 +181,11 @@ export default {
 transition-duration: 0.1s;
 }
 
-.progressContainer {
+.progress-container {
   transition: width 500ms;
 }
 
-.progressContainer .progress {
+.progress-container .progress {
   border-bottom: 1px solid #C2CECE;
   padding-bottom: 5px;
   background-color: green;
@@ -183,7 +214,7 @@ transition-duration: 0.1s;
   border-color: lightblue;
 }
 
-.quizFooter {
+.quiz-footer {
   margin-top: 30px;
 }
 
